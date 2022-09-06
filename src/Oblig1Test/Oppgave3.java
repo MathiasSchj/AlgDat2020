@@ -6,11 +6,20 @@ public class Oppgave3 {
 
         int teller = 1;
 
-        boolean finnes = false;
+        boolean funnet = false;
 
         for (int i = 1; i < a.length; i++) {
-            for (int j = i - 1; j > 0; j--) {
+            funnet = false;
 
+            for (int j = i - 1; j >= 0; j--) {
+
+                if (a[j] == a[i]) {
+                    funnet = true;
+                }
+
+            }
+            if (!funnet) {
+                teller++;
             }
         }
         return teller;
@@ -21,7 +30,7 @@ public class Oppgave3 {
         int [] b = {3,5,2,6,8,6,4,5,3};
         int [] c = {3,5,2,6,8,5,6};
 
-        int ut = antallUlikeUsortert(a);
+        int ut = antallUlikeUsortert(c);
 
         System.out.println("Antall unike tall: " + ut);
     }
