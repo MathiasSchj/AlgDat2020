@@ -85,6 +85,52 @@ public class Tabell     // Samleklasse for tabellmetoder
     }
 
 
+    //Maks-metode i form av desimal
+    public static int maks(double[] a)     // legges i class Tabell
+    {
+        int m = 0;                           // indeks til største verdi
+        double maksverdi = a[0];             // største verdi
+
+        for (int i = 1; i < a.length; i++) if (a[i] > maksverdi)
+        {
+            maksverdi = a[i];     // største verdi oppdateres
+            m = i;                // indeks til største verdi oppdaters
+        }
+        return m;     // returnerer posisjonen til største verdi
+    }
+
+
+    //Maks med bruk av CHar
+    public static int maks(char[] a)     // legges i class Tabell
+    {
+        int m = 0;                           // indeks til største verdi
+        char maksverdi = a[0];             // største verdi
+
+        for (int i = 1; i < a.length; i++) if (a[i] > maksverdi)
+        {
+            maksverdi = a[i];     // største verdi oppdateres
+            m = i;                // indeks til største verdi oppdaters
+        }
+        return m;     // returnerer posisjonen til største verdi
+    }
+
+
+    //Maks metode med Integer og IKKE int
+    public static int maks(Integer[] a)
+    {
+        int m = 0;                          // indeks til største verdi
+        Integer maksverdi = a[0];           // største verdi
+
+        for (int i = 1; i < a.length; i++) if (a[i].compareTo(maksverdi) > 0)
+        {
+            maksverdi = a[i];  // største verdi oppdateres
+            m = i;             // indeks til største verdi oppdaters
+        }
+        return m;  // returnerer posisjonen til største verdi
+
+    } // maks
+
+
     //Metoden nestMaks - returnerer et array med den største tallet og nest sørste tallet.
     //                   Dette gjøres ved return av en ny array som sendes tilbake.
     public static int[] nestMaks(int[] a) // ny versjon
@@ -192,7 +238,7 @@ public class Tabell     // Samleklasse for tabellmetoder
 
 
     // Metoden skrivIntervall - Skriver ut intervallet
-    public static void skrivIntervall(int[] a, int fra, int til) {
+    public static void skriv(int[] a, int fra, int til) {
         for (int i = fra; i < til; i++) {
             System.out.print(a[i] + " ");
         }
@@ -204,7 +250,7 @@ public class Tabell     // Samleklasse for tabellmetoder
     }
 
     // Metoden skrivIntervallLn - Skriver ut intervallet men med linjeskift på slutten
-    public static void skrivIntervallLn(int[] a, int fra, int til) {
+    public static void skrivLn(int[] a, int fra, int til) {
         for (int i = fra; i < til; i++) {
             System.out.print(a[i] + " ");
         }
@@ -251,5 +297,185 @@ public class Tabell     // Samleklasse for tabellmetoder
             throw new IllegalArgumentException
                     ("v = " + v + ", h = " + h);
     }
+
+
+    //metode for å snu tabellen
+    public static void snu(int[] a, int v, int h)  // snur intervallet a[v:h]
+    {
+        while (v < h) bytt(a, v++, h--);
+    }
+
+    public static void snu(int[] a, int v)  // snur fra og med v og ut tabellen
+    {
+        snu(a, v, a.length - 1);
+    }
+
+    public static void snu(int[] a)  // snur hele tabellen
+    {
+        snu(a, 0, a.length - 1);
+    }
+
+
+    //Metode for å finne neste leksiografiske permutasjon
+    public static boolean nestePermutasjon(int[] a)
+    {
+        int i = a.length - 2;                    // i starter nest bakerst
+        while (i >= 0 && a[i] > a[i + 1]) i--;   // går mot venstre
+        if (i < 0) return false;                 // a = {n, n-1, . . . , 2, 1}
+
+        int j = a.length - 1;                    // j starter bakerst
+        while (a[j] < a[i]) j--;                 // stopper når a[j] > a[i]
+        bytt(a,i,j); snu(a,i + 1);               // bytter og snur
+
+        return true;                             // en ny permutasjon
+    }
+
+
+    //Utvalgssortering
+    public static void utvalgssortering(int[] a)
+    {
+        for (int i = 0; i < a.length - 1; i++)
+            bytt(a, i, min(a, i, a.length));  // to hjelpemetoder
+    }
+
+
+    //Metode for linneærsøk
+    public static int lineærsøk(int[] a, int verdi) // legges i class Tabell
+    {
+        if (a.length == 0 || verdi > a[a.length-1])
+            return -(a.length + 1);  // verdi er større enn den største
+
+        int i = 0; for( ; a[i] < verdi; i++);  // siste verdi er vaktpost
+
+        return verdi == a[i] ? i : -(i + 1);   // sjekker innholdet i a[i]
+    }
+
+
+    // 1. versjon av binærsøk - returverdier som for Programkode 1.3.6 a)
+    public static int binærsøk1(int[] a, int fra, int til, int verdi)
+    {
+        Tabell.fratilKontroll(a.length,fra,til);  // se Programkode 1.2.3 a)
+        int v = fra, h = til - 1;  // v og h er intervallets endepunkter
+
+        while (v <= h)    // fortsetter så lenge som a[v:h] ikke er tom
+        {
+            int m = (v + h)/2;      // heltallsdivisjon - finner midten
+            int midtverdi = a[m];   // hjelpevariabel for midtverdien
+
+            if (verdi == midtverdi) return m;          // funnet
+            else if (verdi > midtverdi) v = m + 1;     // verdi i a[m+1:h]
+            else  h = m - 1;                           // verdi i a[v:m-1]
+        }
+
+        return -(v + 1);    // ikke funnet, v er relativt innsettingspunkt
+    }
+
+    public static int binærsøk1(int[] a, int verdi)  // søker i hele a
+    {
+        return binærsøk1(a,0,a.length,verdi);  // bruker metoden over
+    }
+
+
+    // 3. versjon av binærsøk - returverdier som for Programkode 1.3.6 a)
+    public static int binærsøk(int[] a, int fra, int til, int verdi)
+    {
+        Tabell.fratilKontroll(a.length,fra,til);  // se Programkode 1.2.3 a)
+        int v = fra, h = til - 1;  // v og h er intervallets endepunkter
+
+        while (v < h)  // obs. må ha v < h her og ikke v <= h
+        {
+            int m = (v + h)/2;  // heltallsdivisjon - finner midten
+
+            if (verdi > a[m]) v = m + 1;   // verdi må ligge i a[m+1:h]
+            else  h = m;                   // verdi må ligge i a[v:m]
+        }
+        if (h < v || verdi < a[v]) return -(v + 1);  // ikke funnet
+        else if (verdi == a[v]) return v;            // funnet
+        else  return -(v + 2);                       // ikke funnet
+    }
+
+    //Ved duplikat verdier vil den siste instansen av det sammetallet bli returnert i versjon 1 og 2.
+    //i versjon 3 derimmot vil den første instansen returneres.
+    //Versjon 3 er den mest effektive binærsøk versjon
+    //Alle versjonen har en kompleksitet på log2(n)
+
+    //Generic klasse for å sammenligne datatyper
+    public static <T extends Comparable<? super T>> int maks(T[] a)
+    {
+        int m = 0;                     // indeks til største verdi
+        T maksverdi = a[0];            // største verdi
+
+        for (int i = 1; i < a.length; i++) if (a[i].compareTo(maksverdi) > 0)
+        {
+            maksverdi = a[i];  // største verdi oppdateres
+            m = i;             // indeks til største verdi oppdaters
+        }
+        return m;  // returnerer posisjonen til største verdi
+    } // maks
+
+
+    //Generic for innsettingssortering av datatyper
+    public static <T extends Comparable<? super T>> void innsettingssortering(T[] a)
+    {
+        for (int i = 1; i < a.length; i++)  // starter med i = 1
+        {
+            T verdi = a[i];        // verdi er et tabellelemnet
+            int  j = i - 1;        // j er en indeks
+            // sammenligner og forskyver:
+            for (; j >= 0 && verdi.compareTo(a[j]) < 0 ; j--) a[j+1] = a[j];
+
+            a[j + 1] = verdi;      // j + 1 er rett sortert plass
+        }
+    }
+
+
+    //Generic skriv
+    public static <Object extends Comparable<? super Object>> void skriv(Object[] a, int fra, int til) {
+        for (int i = fra; i < til; i++) {
+            System.out.print(a[i] + " ");
+        }
+    }
+
+
+    //Generic skriver hele arrayet
+
+    public static <Object extends Comparable<? super Object>> void skriv(Object[] a) {
+        for (Object k : a) System.out.print(k + " ");  // skriver ut a
+    }
+
+
+    //Generic skrivLn
+    public static <Object extends Comparable<? super Object>> void skrivLn(Object[] a, int fra, int til) {
+        for (int i = fra; i < til; i++) {
+            System.out.print(a[i] + " ");
+        }
+        System.out.println();
+    }
+
+
+    //Generic bytt
+    public static <Object extends Comparable<? super Object>> void bytt(Object[] a, int i, int j) {
+        Object temp = a[i];
+        a[i] = a[j];
+        a[j] = temp;
+    }
+
+    public static Integer[] randPermInteger(int n)
+    {
+        Integer[] a = new Integer[n];               // en Integer-tabell
+        Arrays.setAll(a, i -> i + 1);               // tallene fra 1 til n
+
+        Random r = new Random();   // hentes fra  java.util
+
+        for (int k = n - 1; k > 0; k--)
+        {
+            int i = r.nextInt(k+1);  // tilfeldig tall fra [0,k]
+            bytt(a,k,i);             // bytter om
+        }
+        return a;  // tabellen med permutasjonen returneres
+    }
+
+
+
 
 }

@@ -1,38 +1,37 @@
 package kodeTesting;
 
+import eksempeklasser.*;
 import hjelpeklasser.*;
 
-public class Program
-{
-    public static void main(String [] args)      // hovedprogram
-    {
-        /*int[] a = Tabell.randPerm(20);              // en tilfeldig tabell
-        for (int k : a) System.out.print(k + " ");  // skriver ut a
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Optional;
+import java.util.stream.Stream;
 
-        int m = Tabell.maks(a, 7,10); // finner posisjonen til største verdi
+public class Program {
 
-        System.out.println("\nStørste verdi ligger på plass " + m);
-         */
+    public static void main(String[] args) {
 
+        Student[] s = new Student[7];  // en Studenttabell
 
-        /*int[] a = Tabell.randPerm(20); // tilfeldig permutasjon av 1 . . 20
-        int[] b = Tabell.nestMaks(a);  // metoden returnerer en tabell
+        s[0] = new Student("Kari", "Svendsen", Studium.Data);    // Kari Svendsen
+        s[1] = new Student("Boris", "Zukanovic", Studium.IT);    // Boris Zukanovic
+        s[2] = new Student("Ali", "Kahn", Studium.Anvendt);      // Ali Kahn
+        s[3] = new Student("Azra", "Zukanovic", Studium.IT);     // Azra Zukanovic
+        s[4] = new Student("Kari", "Pettersen", Studium.Data);   // Kari Pettersen
+        s[5] = new Student("Ola", "Helvete", Studium.Elektro);     // Azra Zukanovic
+        s[6] = new Student("Frank", "Smidal", Studium.Elektro);   // Kari Pettersen
 
-        int m = b[0], nm = b[1];       // m for maks, nm for nestmaks
+        Tabell.innsettingssortering(s);                     // Programkode 1.4.2 e)
+        for (Student t : s) System.out.println(t);
 
-        Tabell.skrivLn(a);        // se Oppgave 5 i Avsnitt 1.2.2
-        System.out.print("Størst(" + a[m] + ") har posisjon " + m);
-        System.out.println(", nest størst(" + a[nm] + ") har posisjon " + nm);
+        // Utskrift:
+        // Ali Kahn Anvendt
+        // Kari Pettersen Data
+        // Kari Svendsen Data
+        // Azra Zukanovic IT
+        // Boris Zukanovic IT
 
-         */
-
-        int[] a = Tabell.randPerm(8);
-
-        int [] b = Tabell.nestMaksTre(a);
-
-        System.out.println("Største verdi " + b[0] + ".");
-        System.out.println("Neste største verdi " + b[1] + ".");
-
-    } // main
+    }
 
 } // class Program
